@@ -1,21 +1,20 @@
-package GUI;
-
+package ao.rms.gui;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import BackEnd.Beverage;
-import BackEnd.Cook;
-import BackEnd.Employee;
-import BackEnd.Food;
-import BackEnd.Hamburger;
-import BackEnd.Manager;
-import BackEnd.Menu;
-import BackEnd.Restaurant;
-import BackEnd.Server;
-import BackEnd.Table;
+import ao.rms.employee.Cook;
+import ao.rms.employee.Employee;
+import ao.rms.employee.Manager;
+import ao.rms.employee.Server;
+import ao.rms.food.Beverage;
+import ao.rms.food.Food;
+import ao.rms.food.Hamburger;
+import ao.rms.food.Menu;
+import ao.rms.restaurant.Restaurant;
+import ao.rms.restaurant.Table;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -57,7 +56,7 @@ public class MainPanel extends Application {
 	ObservableList<Table> tableList;
 	
 	public MainPanel() {
-		sns = BackEnd.test.initRestaurant();
+		sns = ao.rms.restaurant.test.initRestaurant();
 		
 		lblID = new Label("ID:");
 		lblPassword = new Label("Password:");
@@ -661,12 +660,12 @@ public class MainPanel extends Application {
 		
 		TableView<Table> tvOrderStage = new TableView<Table>();
 		tvOrderStage.getSelectionModel().selectedItemProperty().addListener(ae -> {
-			if(!(tvOrderStage.getSelectionModel().getSelectedItem() instanceof Manager)) {
-				btnFire.setDisable(false);
-			}
-			else {
-				btnFire.setDisable(true);
-			}
+//			if(!(tvOrderStage.getSelectionModel().getSelectedItem() instanceof Manager)) {
+//				btnFire.setDisable(false);
+//			}
+//			else {
+//				btnFire.setDisable(true);
+//			}
 		});
 		
 		tableList = FXCollections.observableArrayList();
@@ -697,25 +696,25 @@ public class MainPanel extends Application {
 	    tvOrderStage.setItems(tableList);
 	    tvOrderStage.getColumns().addAll(colTableNo, colTableCapacity, colTableStatus, colTableServer, colTableBill);
 
-	    tvOrderStage.add(btnHire, 0, 0);
-	    tvOrderStage.add(btnFire, 0, 1);
-		gpEmployeeStage.add(btnClose, 0, 3);
-		
-		gpEmployeeStage.add(tvEmployeeStage, 1, 0, 1, 3);
-		gpEmployeeStage.setPadding(new Insets(15));
-		gpEmployeeStage.setHgap(15);
-		gpEmployeeStage.setVgap(15);
-
-		btnFire.setOnAction(ae -> {
-			int empIndex = sns.getEmployees().indexOf(tvEmployeeStage.getSelectionModel().getSelectedItem());
-			empList.remove(empIndex);
-			sns.getEmployees().remove(empIndex);
-	
-		});
-		
-		Scene orderScene = new Scene(gpEmployeeStage);
-		orderStage.setScene(orderScene);
-		orderStage.show();
+//	    tvOrderStage.add(btnHire, 0, 0);
+//	    tvOrderStage.add(btnFire, 0, 1);
+//		gpEmployeeStage.add(btnClose, 0, 3);
+//		
+//		gpEmployeeStage.add(tvEmployeeStage, 1, 0, 1, 3);
+//		gpEmployeeStage.setPadding(new Insets(15));
+//		gpEmployeeStage.setHgap(15);
+//		gpEmployeeStage.setVgap(15);
+//
+//		btnFire.setOnAction(ae -> {
+//			int empIndex = sns.getEmployees().indexOf(tvEmployeeStage.getSelectionModel().getSelectedItem());
+//			empList.remove(empIndex);
+//			sns.getEmployees().remove(empIndex);
+//	
+//		});
+//		
+//		Scene orderScene = new Scene(gpEmployeeStage);
+//		orderStage.setScene(orderScene);
+//		orderStage.show();
 	}
 
 	private Object orderPanelChooseTable(Server emp) {

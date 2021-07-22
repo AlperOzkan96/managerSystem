@@ -1,4 +1,6 @@
-package BackEnd;
+package ao.rms.restaurant;
+
+import ao.rms.employee.Server;
 
 public class Table {
 

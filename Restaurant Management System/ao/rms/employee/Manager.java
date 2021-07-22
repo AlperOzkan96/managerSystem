@@ -1,6 +1,8 @@
-package BackEnd;
+package ao.rms.employee;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import ao.rms.restaurant.Restaurant;
 
 public class Manager extends Employee {
 	

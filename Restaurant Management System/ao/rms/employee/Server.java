@@ -1,4 +1,6 @@
-package BackEnd;
+package ao.rms.employee;
+
+import ao.rms.restaurant.Restaurant;
 
 public class Server extends Employee {
 	

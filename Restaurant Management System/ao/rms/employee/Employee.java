@@ -1,5 +1,6 @@
-package BackEnd;
+package ao.rms.employee;
 
+import ao.rms.restaurant.Restaurant;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 public abstract class Employee {

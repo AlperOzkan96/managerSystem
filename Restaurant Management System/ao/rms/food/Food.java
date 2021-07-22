@@ -1,4 +1,4 @@
-package BackEnd;
+package ao.rms.food;
 
 public abstract class Food {
 
