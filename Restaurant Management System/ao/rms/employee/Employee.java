@@ -70,8 +70,6 @@ public abstract class Employee {
 		this.workplace = workplace;
 	}
 	
-	public abstract void displayMenu();
-	
 	public abstract String getTitle();
 
 	public Manager getSupervisor() {

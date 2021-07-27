@@ -23,15 +23,7 @@ public class Hamburger extends Food {
 		super(name, price);
 		super.setFoodType("Hamburger");
 		this.ingredients = ingredients;
-		for(int i = 0; i < ingredients.size(); i++) {
-			for(int j = 0; j < ingredients.get(i).size(); j++) {
-				if(i == ingredients.size() - 1 && j == ingredients.get(i).size() - 1)
-					ingredientList += ingredients.get(i).get(j) + "";
-				else
-					ingredientList += ingredients.get(i).get(j)+ ", ";
-			}
-		}
-		
+		updateIngredientList();
 	}
 
 	public static ArrayList<ArrayList<String>> getAllIngredients(){

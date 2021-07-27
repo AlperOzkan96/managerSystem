@@ -9,12 +9,7 @@ public class Server extends Employee {
 	public Server(String name, String surname, double salary, Restaurant workplace, Manager supervisor) {
 		super(name, surname, salary, workplace, supervisor);
 		setID(surname.toLowerCase());
-		setPassword(name.toLowerCase());
-	}
-	
-	@Override
-	public void displayMenu() {
-		System.out.println("asdf");
+		setPassword("server" + name.toLowerCase());
 	}
 
 	@Override

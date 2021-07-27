@@ -12,20 +12,11 @@ import ao.rms.food.Food;
 import ao.rms.food.Hamburger;
 import ao.rms.food.Menu;
 
-public class test {
-
-	public static void main(String[] args) {
-		
-		initRestaurant();
-		
-	}
-
-	
+public class restaurantItemsInitialize {
 	
 	public static Restaurant initRestaurant() {
 		
 		ArrayList<Hamburger> burgers = new ArrayList<Hamburger>();
-		
 
 		burgers.add(new Hamburger("The Original Double Cheese", 3.99, new ArrayList<ArrayList<String>>(
 				Arrays.asList(new ArrayList<String>(Arrays.asList("American Cheese")),
@@ -108,6 +99,7 @@ public class test {
 		sns.getEmployees().add(mngr);
 		
 		ArrayList<Table> tables = new ArrayList<Table>();
+		
 		for(int tableNo = 0; tableNo < 8; tableNo++) {
 			if(tableNo%2 == 0)
 				tables.add(new Table(2));
@@ -115,31 +107,7 @@ public class test {
 				tables.add(new Table(4));
 		}
 		
-//		System.out.println("Restaurant has successfully created");
-//		System.out.println("Restaurant name: " + sns.getName() + "\nLocation: " + sns.getLocation());
-		
 		return sns;
-	}
-	
-	public static void validatePassword(Restaurant sns) {
-		System.out.print("Please enter your password: ");
-		Scanner sc = new Scanner(System.in);
-		String passwordEntered = sc.nextLine();
-		System.out.println();
-		for(Employee emp: sns.getEmployees()) {
-			if(emp.getPassword().equals(passwordEntered)) {
-				if(emp instanceof Manager) {
-					((Manager)emp).displayMenu();
-				}
-				else if(emp instanceof Server) {
-					((Server)emp).displayMenu();
-				}
-				else if(emp instanceof Cook) {
-					((Cook)emp).displayMenu();
-				}
-			}
-		}
-
 	}
 
 }

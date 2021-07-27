@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -56,7 +57,7 @@ public class MainPanel extends Application {
 	ObservableList<Table> tableList;
 	
 	public MainPanel() {
-		sns = ao.rms.restaurant.test.initRestaurant();
+		sns = ao.rms.restaurant.restaurantItemsInitialize.initRestaurant();
 		
 		lblID = new Label("ID:");
 		lblPassword = new Label("Password:");
@@ -103,10 +104,10 @@ public class MainPanel extends Application {
 	@Override
 	public void init() {
 		btnQuit.setOnAction(ae -> Platform.exit());
-		btnEnter.setOnAction(ae -> validatePassword(sns));
+		btnEnter.setOnAction(ae -> validatePassword());
 	}
 	
-	private void validatePassword(Restaurant sns) {
+	private void validatePassword() {
 		
 		boolean isLoginValid = false;
 		String ID = txtID.getText();
@@ -122,7 +123,7 @@ public class MainPanel extends Application {
 					serverPanel((Server)emp);
 				}
 				else if(emp instanceof Cook) {
-					cookPanel();
+					cookPanel((Cook)emp);
 				}
 			}
 		}
@@ -189,6 +190,7 @@ public class MainPanel extends Application {
 		btnFire.setDisable(true);
 		
 		TableView<Employee> tvEmployeeStage = new TableView<Employee>();
+		
 		tvEmployeeStage.getSelectionModel().selectedItemProperty().addListener(ae -> {
 			if(!(tvEmployeeStage.getSelectionModel().getSelectedItem() instanceof Manager)) {
 				btnFire.setDisable(false);
@@ -232,10 +234,10 @@ public class MainPanel extends Application {
 		gpEmployeeStage.setVgap(15);
 
 		btnFire.setOnAction(ae -> {
-			int empIndex = sns.getEmployees().indexOf(tvEmployeeStage.getSelectionModel().getSelectedItem());
-			empList.remove(empIndex);
-			sns.getEmployees().remove(empIndex);
-	
+			// empIndex = sns.getEmployees().indexOf(tvEmployeeStage.getSelectionModel().getSelectedItem());
+			Employee empFired = tvEmployeeStage.getSelectionModel().getSelectedItem();
+			empList.remove(empFired);
+			sns.getEmployees().remove(empFired);
 		});
 		
 		Scene employeScene = new Scene(gpEmployeeStage);
@@ -342,11 +344,9 @@ public class MainPanel extends Application {
 	    btnModifyItem.setOnAction(ae -> menuPanelModifyItem(emp, tvFood.getSelectionModel().getSelectedItem(), btnAll));
 	    
 	    btnRmvItem.setOnAction(ae -> {
-	    	int foodIndex = sns.getMenu().getFood().indexOf(tvFood.getSelectionModel().getSelectedItem());
-//	    	String foodName = tvFood.getSelectionModel().getSelectedItem().getName();
-//	    	System.out.println(foodName);
-	    	menuList.remove(foodIndex);
-	    	sns.getMenu().getFood().remove(foodIndex);
+	    	Food foodRmvd = tvFood.getSelectionModel().getSelectedItem();
+	    	menuList.remove(foodRmvd);
+	    	sns.getMenu().getFood().remove(foodRmvd);
 	    });
 	    
 		Scene menuScene = new Scene(gpMenuStage);
@@ -385,7 +385,6 @@ public class MainPanel extends Application {
 		modifyButtons.setSpacing(15);
 		modifyButtons.setAlignment(Pos.BASELINE_RIGHT);
 		
-		
 		if(tvFoodEntry instanceof Hamburger) {
 			Label lblIngredients = new Label("Ingredients:");
 			VBox[] vbModifyItem = new VBox[Hamburger.getAllIngredients().size()];
@@ -397,15 +396,13 @@ public class MainPanel extends Application {
 				vbModifyItem[i].getChildren().add(new Label(Hamburger.ingredientHeaders[i]));
 				
 				for(int j = 0; j < Hamburger.getAllIngredients().get(i).size(); j++) {
-
-					vbModifyItem[i].getChildren().add(new CheckBox(Hamburger.getAllIngredients().get(i).get(j)));
-//					
+					vbModifyItem[i].getChildren().add(new CheckBox(Hamburger.getAllIngredients().get(i).get(j)));					
 				}
 				
 				for(int k = 0; k < ((Hamburger)tvFoodEntry).getIngredients().get(i).size(); k++) {
 					for(int l = 0; l < Hamburger.getAllIngredients().get(i).size(); l++) {
 						if(((Hamburger)tvFoodEntry).getIngredients().get(i).get(k).equals(Hamburger.getAllIngredients().get(i).get(l))) {
-//							System.out.println(((Hamburger)tvFoodEntry).getIngredients().get(i).get(k));
+							System.out.println(((Hamburger)tvFoodEntry).getIngredients().get(i).get(k));
 							((CheckBox) (vbModifyItem[i].getChildren().get(l + 1))).setSelected(true);
 						}
 					}	
@@ -413,6 +410,7 @@ public class MainPanel extends Application {
 				
 				ingredientList.getChildren().add(vbModifyItem[i]);
 			}
+			
 			gpModifyItem.add(lblIngredients, 0, 2);
 			gpModifyItem.add(ingredientList, 0, 3, 3, 1);
 			nextRow = 4;
@@ -425,12 +423,9 @@ public class MainPanel extends Application {
 					for(int j = 0; j < Hamburger.getAllIngredients().get(i).size(); j++) {
 						CheckBox cbSelectedItem = ((CheckBox) (vbModifyItem[i].getChildren().get(j + 1)));
 						if(cbSelectedItem.isSelected() && !selectedBurger.getIngredients().get(i).contains(cbSelectedItem.getText())) {
-							System.out.println(cbSelectedItem.getText());
 							selectedBurger.getIngredients().get(i).add(new String(cbSelectedItem.getText()));
-							selectedBurger.updateIngredientList();
-							
+							selectedBurger.updateIngredientList();					
 						}
-						
 						else if(!cbSelectedItem.isSelected() && selectedBurger.getIngredients().get(i).contains(cbSelectedItem.getText())) {
 							int selectedIngrIndex = selectedBurger.getIngredients().get(i).indexOf(cbSelectedItem.getText());
 							selectedBurger.getIngredients().get(i).remove(selectedIngrIndex);
@@ -477,7 +472,6 @@ public class MainPanel extends Application {
 		rbBurger.setToggleGroup(rbGroup);
 
 		RadioButton rbMilkshake = new RadioButton("Milkshake");
-		rbMilkshake.setSelected(true);
 		rbMilkshake.setToggleGroup(rbGroup);
 		
 		HBox radioButtons = new HBox();
@@ -488,28 +482,34 @@ public class MainPanel extends Application {
 		gpAddItem.add(lblFoodType, 0, 2);
 		gpAddItem.add(radioButtons, 1, 2);
 		
-		if(((RadioButton)rbGroup.getSelectedToggle()).getText().equals("Hamburger")) {
-			Label lblIngredients = new Label("Ingredients:");
-			VBox[] vbAddItem = new VBox[Hamburger.getAllIngredients().size()];
-			HBox ingredientList = new HBox();
-			ingredientList.setSpacing(15);
-			for(int i = 0; i < Hamburger.getAllIngredients().size(); i++) {
-				vbAddItem[i] = new VBox();
-				vbAddItem[i].setSpacing(10);
-				vbAddItem[i].getChildren().add(new Label(Hamburger.ingredientHeaders[i]));
-				
-				for(int j = 0; j < Hamburger.getAllIngredients().get(i).size(); j++) {
+		rbGroup.selectedToggleProperty().addListener(ae -> {
+			if(((RadioButton)rbGroup.getSelectedToggle()).getText().equals("Hamburger")) {
+				Label lblIngredients = new Label("Ingredients:");
+				VBox[] vbAddItem = new VBox[Hamburger.getAllIngredients().size()];
+				HBox ingredientList = new HBox();
+				ingredientList.setSpacing(15);
+				for(int i = 0; i < Hamburger.getAllIngredients().size(); i++) {
+					vbAddItem[i] = new VBox();
+					vbAddItem[i].setSpacing(10);
+					vbAddItem[i].getChildren().add(new Label(Hamburger.ingredientHeaders[i]));
+					
+					for(int j = 0; j < Hamburger.getAllIngredients().get(i).size(); j++) {
 
-					vbAddItem[i].getChildren().add(new CheckBox(Hamburger.getAllIngredients().get(i).get(j)));
-//					
+						vbAddItem[i].getChildren().add(new CheckBox(Hamburger.getAllIngredients().get(i).get(j)));
+//						
+					}
+					ingredientList.getChildren().add(vbAddItem[i]);
 				}
-				ingredientList.getChildren().add(vbAddItem[i]);
+				gpAddItem.add(lblIngredients, 0, 3);
+				gpAddItem.add(ingredientList, 0, 4, 3, 1);
 			}
-			gpAddItem.add(lblIngredients, 0, 3);
-			gpAddItem.add(ingredientList, 0, 4, 3, 1);
-			
-		}
+			else if(((RadioButton)rbGroup.getSelectedToggle()).getText().equals("Milkshake")){
+				gpAddItem.getChildren().remove(gpAddItem.getChildren().size() - 1);
+				gpAddItem.getChildren().remove(gpAddItem.getChildren().size() - 1);		
+			}
+		});
 		
+
 		Scene addItemScene = new Scene(gpAddItem);
 		addItemStage.setScene(addItemScene);
 		addItemStage.show();
@@ -600,7 +600,7 @@ public class MainPanel extends Application {
 		
 	}
 
-	private void cookPanel() {
+	private void cookPanel(Cook emp) {
 		// TODO Auto-generated method stub
 		
 	}

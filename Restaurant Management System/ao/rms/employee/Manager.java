@@ -11,23 +11,16 @@ public class Manager extends Employee {
 	public Manager(String name, String surname, double salary, Restaurant workplace) {
 		super(name, surname, salary, workplace, null);
 		supervisedEmployees = null;
-		setID(surname.toLowerCase());
-		setPassword(name.toLowerCase());
+		setID("mngr" + surname.toLowerCase());
+		setPassword("admin");
 	}
 	
 	public String getTitle() {
 		return "Manager";
 	}
-
-	@Override
-	public void displayMenu() {
-		System.out.println("ASDfas");
-		
-	}
 	
 	public ArrayList<Employee> getSupervisedEmployees() {
 		return supervisedEmployees;
 	}
-	
 	
 }
